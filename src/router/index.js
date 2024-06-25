@@ -10,9 +10,14 @@ const router = createRouter({
             children: [
                 {
                     path: '/',
-                    name: 'dashboard',
-                    component: () => import('@/views/Dashboard.vue')
+                    name: 'audit-editor',
+                    component: () => import('@/views/AuditEditor.vue')
                 },
+                // {
+                //     path: '/',
+                //     name: 'dashboard',
+                //     component: () => import('@/views/Dashboard.vue')
+                // },
                 {
                     path: '/dashboard2',
                     name: 'dashboard2',
