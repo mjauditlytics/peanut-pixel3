@@ -299,9 +299,9 @@ onMounted(() => {
 //     console.log('Delete report', report);
 // };
 
-// const createNewReport = () => {
-//     console.log('Create new report');
-// };
+const createNewReport = () => {
+    console.log('Create new report');
+};
 
 // const scheduleAudit = () => {
 //     console.log('Schedule audit');
@@ -323,6 +323,9 @@ onMounted(() => {
             <div class="card">
                 <h5>Quick Actions</h5>
                 <div class="flex flex-wrap gap-2">
+                    <router-link to="/new-wizard">
+                        <Button label="New Review" icon="pi pi-plus" class="p-button-lg" @click="navigateToNewReview" />
+                    </router-link>
                     <Button label="New Report" icon="pi pi-plus" class="p-button-lg p-button-outlined" @click="createNewReport"></Button>
                     <Button label="Schedule Audit" icon="pi pi-calendar" class="p-button-lg p-button-info p-button-outlined"
                         @click="scheduleAudit"></Button>

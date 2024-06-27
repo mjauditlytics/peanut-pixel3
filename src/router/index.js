@@ -8,16 +8,21 @@ const router = createRouter({
             path: '/',
             component: AppLayout,
             children: [
-                {
-                    path: '/',
-                    name: 'audit-editor',
-                    component: () => import('@/views/AuditEditor.vue')
-                },
                 // {
                 //     path: '/',
-                //     name: 'dashboard',
-                //     component: () => import('@/views/Dashboard.vue')
+                //     name: 'audit-editor',
+                //     component: () => import('@/views/AuditEditor.vue')
                 // },
+                {
+                    path: '/',
+                    name: 'dashboard',
+                    component: () => import('@/views/Dashboard.vue')
+                },
+                {
+                    path: '/new-wizard',
+                    name: 'new-wizard',
+                    component: () => import('@/views/pages/NewReviewWizard.vue')
+                },                
                 {
                     path: '/dashboard2',
                     name: 'dashboard2',
