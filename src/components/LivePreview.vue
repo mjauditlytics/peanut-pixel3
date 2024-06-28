@@ -10,17 +10,17 @@ const formattedAuditPeriod = computed(() => {
         const formatDate = (date) => {
             if (date) {
                 return date.toLocaleDateString('en-GB', {
-                    day: '2-digit', 
-                    month: '2-digit', 
+                    day: '2-digit',
+                    month: '2-digit',
                     year: 'numeric'
                 });
             }
             return null;
         };
-        
+
         const formattedStart = formatDate(start);
         const formattedEnd = formatDate(end);
-        
+
         if (formattedStart && formattedEnd) {
             return `${formattedStart} - ${formattedEnd}`;
         } else if (formattedStart) {
@@ -48,15 +48,17 @@ const formattedAuditPeriod = computed(() => {
                     <th>Audit Period:</th>
                     <td>{{ formattedAuditPeriod }}</td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <th>Department:</th>
                     <td>{{ reportData.department || 'Not specified' }}</td>
-                </tr>
+                </tr> -->
             </table>
-            
-            <h2>Audit Scope</h2>
-            <p>{{ reportData.scope || 'Scope not yet defined' }}</p>
-            
+
+            <span class="font-semibold">
+                <br>{{ reportData.staff || 'Staff not yet defined' }}</br>
+                <br>{{ reportData.role || 'Role not yet defined' }}</br>
+                <br>{{ reportData.department || 'Department not yet defined' }}</br>
+            </span>
             <!-- Add more sections as they are implemented -->
         </div>
     </div>
@@ -90,7 +92,8 @@ h1 {
     margin-bottom: 1cm;
 }
 
-.info-table th, .info-table td {
+.info-table th,
+.info-table td {
     border: 1px solid #ddd;
     padding: 8px;
 }

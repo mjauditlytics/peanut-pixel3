@@ -9,46 +9,75 @@ const toast = useToast();
 
 // Define the steps and their corresponding fields
 const steps = ref([
-    { 
-        label: 'Review Title', 
+    {
+        label: 'Top Sheet Details',
         field: 'title',
         component: 'InputText',
-        props: { placeholder: 'Enter review title' }
+        props: { placeholder: 'Enter review title' },
+        questionText: '1. What is the name of the review?'
     },
-    { 
-        label: 'Client Name', 
+    {
+        label: 'Introduction',
         field: 'client',
         component: 'InputText',
-        props: { placeholder: 'Enter client name' }
+        props: { placeholder: 'Enter client name' },
+        questionText: '2. What is the name of your client?'
     },
-    { 
-        label: 'Audit Period', 
+    {
+        label: 'Audit Period',
         field: 'auditPeriod',
         component: 'Calendar',
-        props: { 
-            selectionMode: 'range', 
+        props: {
+            selectionMode: 'range',
             placeholder: 'Select audit period',
             dateFormat: 'dd/mm/yy',
             showIcon: true
-        }
+        },
+        questionText: '4. What is the period under review?'
     },
-    { 
-        label: 'Department', 
+    {
+        label: 'Staff',
+        field: 'staff',
+        component: 'InputText',
+        props: { placeholder: 'Staff Name' },
+        questionText: '5. What is your name?'
+    },
+    {
+        label: 'Role',
+        field: 'role',
+        component: 'InputText',
+        props: { placeholder: 'Role/Designation' },
+        questionText: '6. What is your role?'
+    },
+    {
+        label: 'Department',
         field: 'department',
-        component: 'Dropdown',
-        props: { 
-            options: ['Finance', 'IT', 'HR', 'Operations', 'Legal'],
-            placeholder: 'Select department',
-            optionLabel: 'name',
-            optionValue: 'code'
-        }
+        component: 'InputText',
+        props: { placeholder: "Enter your department's name" },
+        questionText: '7. What is the name of your department?'
+        // component: 'Dropdown',
+        // props: {
+        //     options: ['Finance', 'IT', 'HR', 'Operations', 'Legal'],
+        //     placeholder: 'Select department',
+        //     optionLabel: 'name',
+        //     optionValue: 'code'
+        // }
     },
-    { 
-        label: 'Audit Scope', 
-        field: 'scope',
-        component: 'Textarea',
-        props: { rows: 4, placeholder: 'Describe the audit scope' }
-    },
+    {
+        label: 'Logo',
+        field: 'logo',
+        component: 'FileUpload',
+        props: {  multiple: "false", maxFileSize: "200", accept:"image/*" , customUpload:1},
+        questionText: '8. Please add your logo'
+    }
+    // <FileUpload name="demo[]" @uploader="onUpload" :multiple="true" accept="image/*" :maxFileSize="1000000" customUpload />
+
+    // {
+    //     label: 'Audit Scope',
+    //     field: 'scope',
+    //     component: 'Textarea',
+    //     props: { rows: 4, placeholder: 'Describe the audit scope' }
+    // },
     // Add more steps as needed
 ]);
 
@@ -111,102 +140,55 @@ const departmentOptions = ref([
 // Update department options in steps
 steps.value[3].props.options = departmentOptions.value;
 </script>
-
 <template>
-    <div class="wizard-container">
-        <div class="wizard-content">
-            <h2>New Review Wizard</h2>
-            <Steps 
-                :model="steps" 
-                :readonly="false" 
-                :active="currentStep"
-                @select="onStepClick"
-            />
-            
-            <div class="step-content">
+    <div class="grid">
+        <div class="col-12">
+            <h2>Report Generation Workflow</h2>
+
+            <Steps :model="steps" :readonly="false" :active="currentStep" @select="onStepClick" />
+            <div class="card">
                 <h3>{{ currentStepData.label }}</h3>
-                <component 
-                    :is="currentStepData.component"
-                    v-model="reportData[currentStepData.field]"
-                    v-bind="currentStepData.props"
-                />
+                <div class="grid">
+                    <div class="col-5 flex align-items-center justify-content-center">
+                        <div class="p-fluid">
+                            <div class="field">
+                                <label :for="currentStepData.field" class="mb-4 font-semibold">{{
+                                    currentStepData.questionText
+                                    }}</label>
+                                <component :is="currentStepData.component" v-model="reportData[currentStepData.field]"
+                                    v-bind="currentStepData.props" />
+                            </div>
+
+                            <div class="navigation-buttons">
+                                <Button label="Previous" icon="pi pi-chevron-left"
+                                    class="mt-4 col-4 p-button-sm p-button-primary p-button" @click="prevStep"
+                                    :disabled="currentStep === 0" />
+
+                                <Button label="Next" icon="pi pi-chevron-right" icon-pos="right"
+                                    class="mt-4 col-4 p-button-sm p-button-primary p-button" @click="nextStep"
+                                    :disabled="currentStep === steps.length - 1" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <Divider layout="vertical">
+
+                        </Divider>
+                    </div>
+                    <div class="col-5 align-items-center justify-content-center">
+                        <LivePreview :reportData="reportData" />
+                    </div>
+                </div>
             </div>
-            
-            <div class="navigation-buttons">
-                <Button label="Previous" icon="pi pi-chevron-left" @click="prevStep" :disabled="currentStep === 0" />
-                <Button label="Save & Exit" icon="pi pi-save" severity="secondary" @click="saveAndExit" />
-                <Button label="Next" icon="pi pi-chevron-right" icon-pos="right" @click="nextStep" :disabled="currentStep === steps.length - 1" />
-            </div>
-        </div>
-        
-        <div class="preview-container">
-            <div class="a4-preview">
-                <LivePreview :reportData="reportData" />
-            </div>
+
         </div>
     </div>
 </template>
 
-
 <style scoped>
-.wizard-container {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-}
-
-.wizard-content {
-    flex: 1;
-    padding: 1rem;
-    margin: 2rem;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
-}
-
-h2 {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-}
-
-.steps-container {
-    margin-bottom: 4rem;
-}
-
-.step-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-    margin: 4rem;
-}
-
-.step-content h3 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 1.5rem;
-}
-
-.step-content :deep(.p-inputtext) {
-    width: 100%;
-    max-width: 400px;
-    font-size: 1rem;
-}
-
-.navigation-buttons {
-    display: flex;
-    justify-content: space-between;
-}
-
-:deep(.p-button) {
-    min-width: 120px;
-}
-
 :deep(.p-steps) {
-    height: 70px; /* Adjust as needed */
+    height: 70px;
 }
 
 :deep(.p-steps .p-steps-item .p-menuitem-link) {
@@ -217,53 +199,78 @@ h2 {
     margin-bottom: 0.5rem;
 }
 
-.navigation-buttons {
+.wizard-container {
     display: flex;
-    justify-content: space-between;
-    margin-top: auto;
-    padding-top: 2rem;
-    padding-bottom: 20%; /* This will position buttons 20% from bottom */
+    height: calc(100vh - 300px);
+    /* Adjust based on your layout's header/footer */
+    overflow: hidden;
+}
+
+.wizard-content {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
 }
 
 .preview-container {
     flex: 1;
     background-color: #f0f0f0;
     padding: 1rem;
-    overflow-y: auto;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    overflow: hidden;
 }
 
 .a4-preview {
-    width: 21cm;
-    height: 29.7cm;
+    width: 100%;
+    height: 100%;
+    max-width: 21cm;
+    max-height: 29.7cm;
     background: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    overflow-y: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
+
+.step-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Remove or comment out any existing overflow-y: auto; properties */
 
 @media (max-width: 1200px) {
     .wizard-container {
         flex-direction: column;
+        height: auto;
+        overflow-y: auto;
     }
 
     .preview-container {
         margin-top: 1rem;
+        height: 50vh;
     }
 
     .a4-preview {
         width: 100%;
-        height: auto;
-        min-height: 29.7cm;
-    }
-
-    .steps-container {
-        margin-top: 1rem;
-    }
-
-    .navigation-buttons {
-        padding-bottom: 1rem;
+        height: 100%;
+        max-width: none;
+        max-height: none;
     }
 }
 </style>
