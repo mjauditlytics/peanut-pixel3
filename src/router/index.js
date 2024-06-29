@@ -21,7 +21,8 @@ const router = createRouter({
                 {
                     path: '/new-wizard',
                     name: 'new-wizard',
-                    component: () => import('@/views/pages/NewReviewWizard.vue')
+                    // component: () => import('@/views/pages/NewReviewWizard.vue')
+                    component: () => import('@/components/ReviewSetupPage.vue')
                 },                
                 {
                     path: '/dashboard2',
