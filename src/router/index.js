@@ -13,17 +13,30 @@ const router = createRouter({
                 //     name: 'audit-editor',
                 //     component: () => import('@/views/AuditEditor.vue')
                 // },
+                // {
+                //     path: '/',
+                //     name: 'dashboard',
+                //     component: () => import('@/views/Dashboard.vue')
+                // },
                 {
                     path: '/',
                     name: 'dashboard',
-                    component: () => import('@/views/Dashboard.vue')
-                },
+                    component: () => import('@/views/pages/IAPlanningDashboard.vue')
+                },                
                 {
                     path: '/new-wizard',
                     name: 'new-wizard',
                     // component: () => import('@/views/pages/NewReviewWizard.vue')
-                    component: () => import('@/components/ReviewSetupPage.vue')
-                },                
+                    // component: () => import('@/components/ReviewSetupPage.vue')
+                     component: () => import('@/views/pages/Stage1TopSheet.vue')
+                }, 
+                {
+                    path: '/stage2',
+                    name: 'stage2',
+                    // component: () => import('@/views/pages/NewReviewWizard.vue')
+                    // component: () => import('@/components/ReviewSetupPage.vue')
+                     component: () => import('@/views/pages/Stage2Introduction.vue')
+                },                                
                 {
                     path: '/dashboard2',
                     name: 'dashboard2',
